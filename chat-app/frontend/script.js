@@ -20,7 +20,7 @@ async function getAllMessages() {
   }
 }
 
-getAllMessages();
+setInterval(getAllMessages, 5000);
 
 const formElement = document.getElementById("chat-form");
 const senderElement = document.getElementById("chat-sender");
