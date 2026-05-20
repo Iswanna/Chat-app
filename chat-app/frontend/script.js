@@ -1,18 +1,20 @@
+let lastIdSeen = -1;
+
 async function getAllMessages() {
   try {
-    const response = await fetch("https://iswanna-chat-app-backend.onrender.com/messages");
+    const response = await fetch(
+      `https://iswanna-chat-app-backend.onrender.com/messages?since=${lastIdSeen}`,
+    );
 
     const data = await response.json();
 
     const messageContainer = document.getElementById("all-messages");
 
-    messageContainer.textContent = "";
-
     data.forEach((message) => {
       const newElement = document.createElement("div");
 
       newElement.textContent = message.sender + ": " + message.text;
-
+      lastIdSeen = message.id;
       messageContainer.appendChild(newElement);
     });
   } catch (error) {
