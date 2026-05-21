@@ -17,12 +17,14 @@ async function getAllMessages() {
       lastIdSeen = message.id;
       messageContainer.appendChild(newElement);
     });
+    setTimeout(getAllMessages, 5000);
   } catch (error) {
+    setTimeout(getAllMessages, 5000);
     console.error("Error fetching messages:", error);
   }
 }
 
-setInterval(getAllMessages, 5000);
+getAllMessages();
 
 const formElement = document.getElementById("chat-form");
 const senderElement = document.getElementById("chat-sender");
