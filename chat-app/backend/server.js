@@ -66,6 +66,20 @@ app.get("/messages", (req, res) => {
   }
 });
 
+app.post("/messages/:id/like", (req, res) => {
+  // Get the id from the URL
+  const idFromUrl = req.params.id;
+
+  //convert to number
+  const idAsNumber = Number(idFromUrl);
+
+  const messageWithIdAsNumber = messages.find(
+    (message) => message.id === idAsNumber,
+  );
+
+  messageWithIdAsNumber.likes += 1;
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Chat app listening on port ${port}`);
