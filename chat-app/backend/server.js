@@ -78,6 +78,17 @@ app.post("/messages/:id/like", (req, res) => {
   );
 
   messageWithIdAsNumber.likes += 1;
+
+  if (messageWithIdAsNumber) {
+    while (callBacksForNewMessages.length > 0) {
+      const callback = callBacksForNewMessages.pop();
+
+      callback([messageWithIdAsNumber]);
+    }
+    res.status(200).send(messageWithIdAsNumber);
+  } else {
+    res.status(404).send("Message not found");
+  }
 });
 
 // Start the server
