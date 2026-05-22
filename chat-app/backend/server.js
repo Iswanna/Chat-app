@@ -5,6 +5,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const messages = [];
+const callBacksForNewMessages = [];
 
 // Enable CORS for all routes
 app.use(cors());
@@ -49,7 +50,11 @@ app.get("/messages", (req, res) => {
 
   const messagesSinceId = messages.filter((message) => message.id > sinceId);
 
-  res.send(messagesSinceId);
+  if (messagesSinceId.length === 0) {
+    callBacksForNewMessages.push((value) => res.send(value));
+  } else {
+    res.send(messagesSinceId);
+  }
 });
 
 // Start the server
