@@ -14,10 +14,20 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/messages", (req, res) => {
+  // Check if re.body exists at all
+  if (!req.body) {
+    return res.status(400).send("No body provided");
+  }
+
   const { text, sender } = req.body;
 
-  // The validation
-  if (!text || text.length === 0 || !sender || sender.length === 0) {
+  // Check if the inputs are strings
+  if (typeof text !== "string" || typeof sender !== "string") {
+    return res.status(400).send("Inputs must be strings");
+  }
+
+  // Check if the inputs are not a falsy value
+  if (!text.trim() || !sender.trim()) {
     return res.status(400).send("Please provide both text and a sender name.");
   }
 
