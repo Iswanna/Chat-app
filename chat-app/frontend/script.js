@@ -74,8 +74,16 @@ const messageElement = document.getElementById("chat-message");
 formElement.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const senderValue = senderElement.value;
-  const messageValue = messageElement.value;
+  // Get the values and trim them
+  const senderValue = senderElement.value.trim();
+  const messageValue = messageElement.value.trim();
+
+  // The validation
+  if (senderValue === "" || messageValue === "") {
+    alert("Please enter both a name and a message!");
+
+    return;
+  }
 
   try {
     // Send the data
