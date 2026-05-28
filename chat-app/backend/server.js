@@ -37,7 +37,6 @@ app.post("/messages", (req, res) => {
     sender: sender,
     text: text,
     likes: 0,
-    dislikes: 0,
   };
 
   // Add the new message to the messages array (the storage)
