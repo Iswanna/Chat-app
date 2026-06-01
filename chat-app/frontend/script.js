@@ -9,6 +9,13 @@ async function getAllMessages() {
       `${API_BASE_URL}/messages?since=${lastIdSeen}`,
     );
 
+    // check if the response is not ok
+    if (!response.ok) {
+      // Stop everything and jump to the catch block
+      throw new Error(`HTTP Error: ${response.status}`);
+    }
+
+    // we only get here if the response was ok
     const data = await response.json();
 
     const messageContainer = document.getElementById("all-messages");
