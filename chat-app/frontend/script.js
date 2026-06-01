@@ -26,10 +26,10 @@ async function getAllMessages() {
   }
 }
 
-function renderMessages(data) {
+function renderMessages(messages) {
   const messageContainer = document.getElementById("all-messages");
 
-  data.forEach((message) => {
+  messages.forEach((message) => {
     const elementId = "msg-" + message.id;
 
     const existingElement = document.getElementById(elementId);
