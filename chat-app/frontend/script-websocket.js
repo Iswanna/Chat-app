@@ -1,30 +1,29 @@
-const API_BASE_URL = "https://iswanna-chat-app-backend.hosting.codeyourfuture.io";
-//const API_BASE_URL = "http://localhost:3000";
+const API_URL = "iswanna-chat-app-backend.hosting.codeyourfuture.io";
+const API_BASE_URL = `https://${API_URL}`;
+
+// const API_URL = "localhost:3000";
+// const API_BASE_URL = `http://${API_URL}`;
 
 let lastIdSeen = -1;
 
-async function getAllMessages() {
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/messages?since=${lastIdSeen}`,
-    );
+const wsUri = `wss://${API_URL}/messages?since=${lastIdSeen}`;
+// const wsUri = `ws://${API_URL}/messages?since=${lastIdSeen}`
 
-    // check if the response is not ok
-    if (!response.ok) {
-      // Stop everything and jump to the catch block
-      throw new Error(`HTTP Error: ${response.status}`);
-    }
+const webSocket = new WebSocket(wsUri);
 
-    // we only get here if the response was ok
-    const data = await response.json();
+webSocket.addEventListener("open", (event) => {
+  webSocket.send("Hello Server!");
+});
 
-    renderMessages(data);
-  } catch (error) {
-    console.error("Error fetching messages:", error);
-  } finally {
-    setTimeout(getAllMessages, 0);
+webSocket.addEventListener("message", (event) => {
+  const receivedMessage = JSON.parse(event.data);
+
+  const command = receivedMessage.command;
+
+  if (command === "new-message" || command === "update-like") {
+    renderMessages([receivedMessage.payload]);
   }
-}
+});
 
 function renderMessages(messages) {
   const messageContainer = document.getElementById("all-messages");
@@ -75,8 +74,6 @@ function renderMessages(messages) {
     }
   });
 }
-
-getAllMessages();
 
 const formElement = document.getElementById("chat-form");
 const senderElement = document.getElementById("chat-sender");
