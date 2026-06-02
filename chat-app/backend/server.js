@@ -1,17 +1,37 @@
 import express from "express";
 import cors from "cors";
+import { connection, server as WebSocketServer } from "websocket";
+import http from "http";
 
 const app = express();
+const server = http.createServer(app);
+const webSocketServer = new WebSocketServer({ httpServer: server });
+
 const port = process.env.PORT || 3000;
 
 const messages = [];
 const callBacksForNewMessages = [];
+let activeConnections = [];
 
 // Enable CORS for all routes
 app.use(cors());
 
 // Middleware to parse JSON request body
 app.use(express.json());
+
+webSocketServer.on("request", (request) => {
+  const connection = request.accept(null, request.origin);
+
+  activeConnections.push(connection);
+
+  console.log("A user connected");
+
+  connection.on("close", () => {
+    activeConnections = activeConnections.filter(
+      (connecionToRemove) => connection !== connecionToRemove,
+    );
+  });
+});
 
 app.post("/messages", (req, res) => {
   // Check if re.body exists at all
@@ -42,14 +62,14 @@ app.post("/messages", (req, res) => {
   // Add the new message to the messages array (the storage)
   messages.push(newMessage);
 
-  // long polling logic
-  while (callBacksForNewMessages.length > 0) {
-    const callBack = callBacksForNewMessages.pop();
+  activeConnections.forEach((connection) => {
+    // Turn new message object to a string
+    const newMessageString = JSON.stringify(newMessage);
 
-    callBack([newMessage]);
-  }
+    // Send the string message to the connection
+    connection.sendUTF(newMessageString);
+  });
 
-  // Finally, respond to the person who actually sent the POST request
   res.status(201).send(newMessage);
 });
 app.get("/messages", (req, res) => {
@@ -101,6 +121,6 @@ app.post("/messages/:id/like", (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Chat app listening on port ${port}`);
 });
