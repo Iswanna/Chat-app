@@ -26,9 +26,23 @@ webSocketServer.on("request", (request) => {
 
   console.log("A user connected");
 
+  const sinceId = Number(request.resourceURL.query.since);
+
+  if (!isNaN(sinceId)) {
+    const messagesSineId = messages.filter((message) => message.id > sinceId);
+
+    messagesSineId.forEach((message) => {
+      const messageSinceIdObject = {
+        command: "new-message",
+        payload: message,
+      };
+      connection.sendUTF(JSON.stringify(messageSinceIdObject));
+    });
+  }
+
   connection.on("close", () => {
     activeConnections = activeConnections.filter(
-      (connecionToRemove) => connection !== connecionToRemove,
+      (connectionToRemove) => connection !== connectionToRemove,
     );
   });
 });
@@ -62,14 +76,26 @@ app.post("/messages", (req, res) => {
   // Add the new message to the messages array (the storage)
   messages.push(newMessage);
 
+  // Websocket Broadcast
   activeConnections.forEach((connection) => {
     // Turn new message object to a string
-    const newMessageString = JSON.stringify(newMessage);
+    const newMessageString = {
+      command: "new-message",
+      payload: newMessage,
+    };
 
     // Send the string message to the connection
-    connection.sendUTF(newMessageString);
+    connection.sendUTF(JSON.stringify(newMessageString));
   });
 
+  // long polling Broadcast
+  while (callBacksForNewMessages.length > 0) {
+    const callBack = callBacksForNewMessages.pop();
+
+    callBack([newMessage]);
+  }
+
+  // Finally, respond to the person who actually sent the POST request
   res.status(201).send(newMessage);
 });
 app.get("/messages", (req, res) => {
@@ -111,6 +137,17 @@ app.post("/messages/:id/like", (req, res) => {
     id: messageWithIdAsNumber.id,
     likes: messageWithIdAsNumber.likes,
   };
+
+  activeConnections.forEach((connection) => {
+    // Turn new message object to a string
+    const updateMessageString = {
+      command: "update-like",
+      payload: dataToSendToClient,
+    };
+
+    // Send the string message to the connection
+    connection.sendUTF(JSON.stringify(updateMessageString));
+  });
 
   while (callBacksForNewMessages.length > 0) {
     const callBack = callBacksForNewMessages.pop();
