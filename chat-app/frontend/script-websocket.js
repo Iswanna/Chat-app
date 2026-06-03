@@ -20,7 +20,7 @@ webSocket.addEventListener("message", (event) => {
 
   const command = receivedMessage.command;
 
-  if (command === "new-message" || command === "update-like") {
+  if (command === "new-message" || command === "update-counter") {
     renderMessages([receivedMessage.payload]);
   }
 });
@@ -36,10 +36,17 @@ function renderMessages(messages) {
     if (existingElement) {
       // find the specific span that hold the likes
       const likeSpan = document.getElementById("likes-count-" + message.id);
+      const dislikeSpan = document.getElementById(
+        "dislikes-count-" + message.id,
+      );
 
       // update only that span
       if (likeSpan) {
         likeSpan.textContent = `(${message.likes} Likes) `;
+      }
+
+      if (dislikeSpan) {
+        dislikeSpan.textContent = `(${message.dislikes} Dislikes) `;
       }
     } else {
       const newElement = document.createElement("div");
@@ -54,7 +61,12 @@ function renderMessages(messages) {
       likeSpan.id = "likes-count-" + message.id;
       likeSpan.textContent = `(${message.likes} Likes) `;
 
-      // Layer 3: the button
+      //Layer 2a: the counter (this is the one we will update later)
+      const disLikeSpan = document.createElement("span");
+      disLikeSpan.id = "dislikes-count-" + message.id;
+      disLikeSpan.textContent = `(${message.dislikes} Dislikes) `;
+
+      // Layer 3: the like button
       const likeButton = document.createElement("button");
       likeButton.textContent = "Like";
 
@@ -64,10 +76,22 @@ function renderMessages(messages) {
         });
       });
 
+      // Layer 3: the dislike button
+      const disLikeButton = document.createElement("button");
+      disLikeButton.textContent = "Dislike";
+
+      disLikeButton.addEventListener("click", async () => {
+        await fetch(`${API_BASE_URL}/messages/${message.id}/dislike`, {
+          method: "POST",
+        });
+      });
+
       // put it all together
       newElement.appendChild(textSpan);
       newElement.appendChild(likeSpan);
       newElement.appendChild(likeButton);
+      newElement.appendChild(disLikeSpan);
+      newElement.appendChild(disLikeButton);
       messageContainer.appendChild(newElement);
 
       lastIdSeen = message.id;
