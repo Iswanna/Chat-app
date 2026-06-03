@@ -47,29 +47,45 @@ webSocketServer.on("request", (request) => {
   });
 });
 
-app.post("/messages", (req, res) => {
-  // Check if re.body exists at all
+function isValidMessage(req, res) {
+  // Check if request body exists at all
   if (!req.body) {
-    return res.status(400).send("No body provided");
+    res.status(400).send("No body provided");
+    return false;
   }
 
   const { text, sender } = req.body;
 
   // Check if the inputs are strings
   if (typeof text !== "string" || typeof sender !== "string") {
-    return res.status(400).send("Inputs must be strings");
+    res.status(400).send("Inputs must be strings");
+    return false;
   }
 
   // Check if the inputs are not a falsy value
   if (!text.trim() || !sender.trim()) {
-    return res.status(400).send("Please provide both text and a sender name.");
+    res.status(400).send("Please provide both text and a sender name.");
+    return false;
+  }
+
+  return {
+    text: text.trim(),
+    sender: sender.trim(),
+  };
+}
+
+app.post("/messages", (req, res) => {
+  const requestBody = isValidMessage(req, res);
+
+  if (!requestBody) {
+    return;
   }
 
   // Create the message object
   const newMessage = {
     id: messages.length,
-    sender: sender,
-    text: text,
+    sender: requestBody.sender,
+    text: requestBody.text,
     likes: 0,
     dislikes: 0,
   };
@@ -99,6 +115,7 @@ app.post("/messages", (req, res) => {
   // Finally, respond to the person who actually sent the POST request
   res.status(201).send(newMessage);
 });
+
 app.get("/messages", (req, res) => {
   const sinceValue = req.query.since;
 
@@ -158,37 +175,39 @@ function findMessageOrError(req, res) {
 app.post("/messages/:id/like", (req, res) => {
   const messageWithIdAsNumber = findMessageOrError(req, res);
 
-  if (messageWithIdAsNumber) {
-    messageWithIdAsNumber.likes += 1;
-
-    const dataToSendToClient = {
-      id: messageWithIdAsNumber.id,
-      likes: messageWithIdAsNumber.likes,
-      dislikes: messageWithIdAsNumber.dislikes,
-    };
-
-    broadcastCounterUpdate(dataToSendToClient);
-
-    res.status(200).send(dataToSendToClient);
+  if (!messageWithIdAsNumber) {
+    return;
   }
+  messageWithIdAsNumber.likes += 1;
+
+  const dataToSendToClient = {
+    id: messageWithIdAsNumber.id,
+    likes: messageWithIdAsNumber.likes,
+    dislikes: messageWithIdAsNumber.dislikes,
+  };
+
+  broadcastCounterUpdate(dataToSendToClient);
+
+  res.status(200).send(dataToSendToClient);
 });
 
 app.post("/messages/:id/dislike", (req, res) => {
   const messageWithIdAsNumber = findMessageOrError(req, res);
 
-  if (messageWithIdAsNumber) {
-    messageWithIdAsNumber.dislikes += 1;
-
-    const dataToSendToClient = {
-      id: messageWithIdAsNumber.id,
-      likes: messageWithIdAsNumber.likes,
-      dislikes: messageWithIdAsNumber.dislikes,
-    };
-
-    broadcastCounterUpdate(dataToSendToClient);
-
-    res.status(200).send(dataToSendToClient);
+  if (!messageWithIdAsNumber) {
+    return;
   }
+  messageWithIdAsNumber.dislikes += 1;
+
+  const dataToSendToClient = {
+    id: messageWithIdAsNumber.id,
+    likes: messageWithIdAsNumber.likes,
+    dislikes: messageWithIdAsNumber.dislikes,
+  };
+
+  broadcastCounterUpdate(dataToSendToClient);
+
+  res.status(200).send(dataToSendToClient);
 });
 
 // Start the server
