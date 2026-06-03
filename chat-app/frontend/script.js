@@ -1,4 +1,5 @@
-const API_BASE_URL = "https://iswanna-chat-app-backend.hosting.codeyourfuture.io";
+const API_BASE_URL =
+  "https://iswanna-chat-app-backend.hosting.codeyourfuture.io";
 //const API_BASE_URL = "http://localhost:3000";
 
 let lastIdSeen = -1;

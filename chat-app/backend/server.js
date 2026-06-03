@@ -120,31 +120,12 @@ app.get("/messages", (req, res) => {
   }
 });
 
-app.post("/messages/:id/like", (req, res) => {
-  // Get the id from the URL
-  const idFromUrl = req.params.id;
-
-  //convert to number
-  const idAsNumber = Number(idFromUrl);
-
-  const messageWithIdAsNumber = messages[idAsNumber];
-
-  if (!messageWithIdAsNumber) {
-    return res.status(404).send("Message not found");
-  }
-  messageWithIdAsNumber.likes += 1;
-
-  const dataToSendToClient = {
-    id: messageWithIdAsNumber.id,
-    likes: messageWithIdAsNumber.likes,
-    dislikes: messageWithIdAsNumber.dislikes,
-  };
-
+function broadcastCounterUpdate(data) {
   activeConnections.forEach((connection) => {
     // Turn new message object to a string
     const updateMessageString = {
       command: "update-counter",
-      payload: dataToSendToClient,
+      payload: data,
     };
 
     // Send the string message to the connection
@@ -154,48 +135,60 @@ app.post("/messages/:id/like", (req, res) => {
   while (callBacksForNewMessages.length > 0) {
     const callBack = callBacksForNewMessages.pop();
 
-    callBack([dataToSendToClient]);
+    callBack([data]);
   }
-  res.status(200).send(dataToSendToClient);
+}
+
+function findMessageOrError(req, res) {
+  // Get the id from the URL
+  const idFromUrl = req.params.id;
+
+  //convert to number
+  const idAsNumber = Number(idFromUrl);
+
+  const messageWithIdAsNumber = messages[idAsNumber];
+
+  if (!messageWithIdAsNumber) {
+    res.status(404).send("Message not found");
+    return null;
+  }
+
+  return messageWithIdAsNumber;
+}
+app.post("/messages/:id/like", (req, res) => {
+  const messageWithIdAsNumber = findMessageOrError(req, res);
+
+  if (messageWithIdAsNumber) {
+    messageWithIdAsNumber.likes += 1;
+
+    const dataToSendToClient = {
+      id: messageWithIdAsNumber.id,
+      likes: messageWithIdAsNumber.likes,
+      dislikes: messageWithIdAsNumber.dislikes,
+    };
+
+    broadcastCounterUpdate(dataToSendToClient);
+
+    res.status(200).send(dataToSendToClient);
+  }
 });
 
 app.post("/messages/:id/dislike", (req, res) => {
-  // Get the id from the URL
-  const idFromUrl = req.params.id;
+  const messageWithIdAsNumber = findMessageOrError(req, res);
 
-  //convert to number
-  const idAsNumber = Number(idFromUrl);
+  if (messageWithIdAsNumber) {
+    messageWithIdAsNumber.dislikes += 1;
 
-  const messageWithIdAsNumber = messages[idAsNumber];
-
-  if (!messageWithIdAsNumber) {
-    return res.status(404).send("Message not found");
-  }
-  messageWithIdAsNumber.dislikes += 1;
-
-  const dataToSendToClient = {
-    id: messageWithIdAsNumber.id,
-    likes: messageWithIdAsNumber.likes,
-    dislikes: messageWithIdAsNumber.dislikes,
-  };
-
-  activeConnections.forEach((connection) => {
-    // Turn new message object to a string
-    const updateMessageString = {
-      command: "update-counter",
-      payload: dataToSendToClient,
+    const dataToSendToClient = {
+      id: messageWithIdAsNumber.id,
+      likes: messageWithIdAsNumber.likes,
+      dislikes: messageWithIdAsNumber.dislikes,
     };
 
-    // Send the string message to the connection
-    connection.sendUTF(JSON.stringify(updateMessageString));
-  });
+    broadcastCounterUpdate(dataToSendToClient);
 
-  while (callBacksForNewMessages.length > 0) {
-    const callBack = callBacksForNewMessages.pop();
-
-    callBack([dataToSendToClient]);
+    res.status(200).send(dataToSendToClient);
   }
-  res.status(200).send(dataToSendToClient);
 });
 
 // Start the server
