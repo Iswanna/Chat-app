@@ -1,79 +1,74 @@
-## Changes Made
+# Hybrid Real-Time Chat API 💬
 
-### Backend Implementation (`backend/`)
+<p align="left">
+  <img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" />
+  <img src="https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB" />
+  <img src="https://img.shields.io/badge/WebSockets-010101?style=for-the-badge&logo=socket.io&logoColor=white" />
+</p>
 
-#### `server.js` (New)
+### 🔗 [Live Backend](https://iswanna-chat-app-backend.hosting.codeyourfuture.io) | [Live Frontend (WebSockets)](YOUR-FRONTEND-LINK) | [ Live Frontend (Long Polling)](https://iswanna-chat-app-frontend.hosting.codeyourfuture.io)
 
-- Set up Express server with CORS middleware
-- Implemented **POST `/messages`** endpoint with input validation
-  - Validates sender name and message text
-  - Creates message objects with id, sender, text, likes, and dislikes
-  - Returns 201 status on success, 400 on validation error
-  - Triggers long polling callbacks to notify waiting clients
-- Implemented **GET `/messages`** endpoint with long polling
-  - Accepts `?since=` query parameter for incremental message loading
-  - Returns only messages with id > sinceId
-  - Holds client requests until new messages arrive (long polling)
-  - Handles edge case where since=0 correctly
-- Implemented **POST `/messages/:id/like`** endpoint
-  - Increments like count for specified message
-  - Notifies all waiting clients via long polling
-  - Returns 200 on success, 404 if message not found
+## 📌 Project Overview
+A sophisticated backend engine that supports real-time communication across multiple client types. This project demonstrates a "Hybrid" approach, ensuring high-speed data delivery via WebSockets while maintaining backward compatibility through HTTP Long Polling.
 
-#### `package.json` (New)
 
-- Configured as ES module project (`"type": "module"`)
-- Added Express 5.2.1 dependency
-- Added CORS 2.8.6 dependency
+## 🛠 Technologies Used
 
-### Frontend Implementation (`frontend/`)
+### **Backend (Server-Side)**
+*   **Node.js**: The runtime environment used to execute JavaScript on the server.
+*   **Express.js**: The web framework used to build the RESTful API and manage middleware.
+*   **WebSockets (ws/wss)**: Used to establish a persistent, bidirectional communication pipe for real-time updates.
+*   **CORS**: Middleware used to allow secure cross-origin communication between the frontend and backend.
 
-#### `index.html` (New)
+### **Frontend (Client-Side)**
+*   **Vanilla JavaScript (ES6+)**: Used for DOM manipulation, event handling, and managing the WebSocket lifecycle.
+*   **HTML5 & CSS3**: Used to structure and style the chat interface.
+*   **Fetch API**: Used for standard HTTP POST requests to send messages and reactions.
 
-- Semantic HTML structure with proper meta tags
-- Chat form with sender name and message inputs
-- Message container div for displaying chat history
-- Deferred JavaScript execution for proper DOM loading
+### **Tools & Dev Ops**
+*   **NPM**: Used for package management.
+*   **JSON**: The data format used for the custom "Command Pattern" protocol.
+*   **Git/GitHub**: Version control and documentation.
 
-#### `script.js` (New)
+## ✨ Key Features
+- **Dual-Mode Broadcasting:** Engineered a server that simultaneously pushes updates to WebSocket "pipes" and handles "waiting" Long Polling requests.
+- **State Reconciliation (Catch-up):** Implemented logic using `?since=` query parameters to automatically synchronize chat history for users who connect late or experience network flickers.
+- **Live Reactions:** Real-time Like and Dislike functionality with an "Absolute Total" update strategy to ensure UI consistency across all connected sessions.
+- **Command Pattern Protocol:** Designed a structured message format (`command` and `payload`) to allow the frontend to distinguish between new messages and reaction updates over a single stream.
 
-- **`getAllMessages()`** async function
-  - Fetches messages from backend with `?since=` parameter
-  - Implements incremental message loading via `lastIdSeen` tracking
-  - Updates existing message likes without re-rendering
-  - Creates DOM elements for new messages with text, like count, and like button
-  - Uses long polling with `setTimeout(getAllMessages, 0)` for real-time updates
-  - Includes error handling with automatic retry on fetch failure
+## ⚙️ Engineering Wins
+- **Custom Middleware Pipeline:** Developed modular middlewares for header extraction (`X-Username`) and manual JSON array validation, including robust `try/catch` error handling to prevent server crashes.
+- **DRY Refactoring:** Optimized the codebase by extracting common functionality into centralized helper functions for message retrieval, input sanitization (trimming), and multi-protocol broadcasting.
+- **Reliability:** Built-in "Early Return" guard clauses and 404/400 error handling ensure the API is robust against malformed data.
 
-- **Form submission handler**
-  - Validates sender name and message text
-  - Sends POST request with JSON payload
-  - Clears input fields after successful submission
-  - Includes try-catch error handling
 
-- **Like button functionality**
-  - Sends POST request to `/messages/:id/like` endpoint
-  - Extracts current like count from DOM
-  - Provides immediate UI feedback (optimistic update)
-  - Updates display instantly without waiting for server response
+## 🚀 Getting Started
 
-#### `styles.css` (New)
+To run this project locally, follow these steps:
 
-- Styled message containers with border, padding, and rounded corners
-- Light gray background (#f9f9f9) for message boxes
-- Styled like buttons with blue background (#007bff) and white text
-- Proper spacing and cursor pointer for better UX
+### 🚀 Getting Started
 
-## Testing Instructions
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Iswanna/Module-Decomposition.git
+   ```
+2. **Navigate into the project folder:**
+   ```bash
+   cd chat-app
+   ```
+3. **Switch to the branch with my work:**
+   ```bash
+   git checkout feature/chat-app
+   ```
+4. **Install the dependencies:**
+   ```bash
+   cd backend
+   npm install
+   ```
+5. **Start the server:**
+   ```bash
+   node server.js
+   ```
+6. **Open the App:**
+   Open `index.html` (for long-polling) or `index-websocket.html` (for WebSockets) in your browser.
 
-### Setup
-
-```bash
-# Install backend dependencies
-cd backend
-npm install
-
-# Start backend server
-node server.js
-
-```
