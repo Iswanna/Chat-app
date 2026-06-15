@@ -46,8 +46,6 @@ A sophisticated backend engine that supports real-time communication across mult
 
 To run this project locally, follow these steps:
 
-### 🚀 Getting Started
-
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/Iswanna/Module-Decomposition.git
