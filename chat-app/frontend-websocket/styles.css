@@ -8,10 +8,7 @@ body {
   padding: 40px 20px 56px;
   font-family: "Trebuchet MS", "Segoe UI", sans-serif;
   color: #35261f;
-  background:
-    radial-gradient(circle at top left, rgba(255, 162, 91, 0.22), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(255, 112, 150, 0.18), transparent 28%),
-    linear-gradient(180deg, #fff7ef 0%, #fff1e4 48%, #ffe5db 100%);
+  background: #cac1b9;
 }
 
 h1 {
@@ -75,7 +72,7 @@ button {
   padding: 11px 18px;
   color: #ffffff;
   font-weight: 700;
-  background: linear-gradient(135deg, #ff865e 0%, #ff5d8f 100%);
+  background: #ff5d8f;
   box-shadow: 0 12px 24px rgba(255, 109, 109, 0.2);
   transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }
