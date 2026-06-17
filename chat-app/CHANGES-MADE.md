@@ -26,7 +26,7 @@
 - Added Express 5.2.1 dependency
 - Added CORS 2.8.6 dependency
 
-### Frontend Implementation (`frontend/`)
+### Frontend Implementation (`frontend-polling/`)
 
 #### `index.html` (New)
 
@@ -63,6 +63,22 @@
 - Light gray background (#f9f9f9) for message boxes
 - Styled like buttons with blue background (#007bff) and white text
 - Proper spacing and cursor pointer for better UX
+
+### WebSocket Frontend Implementation (`frontend-websocket/`)
+
+#### `index-websocket.html` (New)
+
+- Same chat UI structure as the polling frontend
+- Uses `script-websocket.js` for WebSocket-specific behavior
+
+#### `script-websocket.js` (New)
+
+- Handles WebSocket connection setup and message updates
+- Keeps the client-side logic separate from the long-polling implementation
+
+#### `styles.css` (New)
+
+- Changed the WebSocket frontend message card background color
 
 ## Testing Instructions
 
