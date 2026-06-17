@@ -66,12 +66,12 @@
 
 ### WebSocket Frontend Implementation (`frontend-websocket/`)
 
-#### `index-websocket.html` (New)
+#### `index.html` (New)
 
 - Same chat UI structure as the polling frontend
-- Uses `script-websocket.js` for WebSocket-specific behavior
+- Uses `script.js` for WebSocket-specific behavior
 
-#### `script-websocket.js` (New)
+#### `script.js` (New)
 
 - Handles WebSocket connection setup and message updates
 - Keeps the client-side logic separate from the long-polling implementation

@@ -68,5 +68,5 @@ To run this project locally, follow these steps:
    node server.js
    ```
 6. **Open the App:**
-   Open `index.html` (for long-polling) or `index-websocket.html` (for WebSockets) in your browser.
+   Open `frontend-polling/index.html` (for long-polling) or `frontend-websocket/index.html` (for WebSockets) in your browser.
 
