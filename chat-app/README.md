@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/badge/WebSockets-010101?style=for-the-badge&logo=socket.io&logoColor=white" />
 </p>
 
-### 🔗 [Live Backend](https://iswanna-chat-app-backend.hosting.codeyourfuture.io/messages) | [Live Frontend (WebSockets)](YOUR-FRONTEND-LINK) | [ Live Frontend (Long Polling)](https://iswanna-chat-app-frontend-long-polling.hosting.codeyourfuture.io)
+### 🔗 [Live Backend](https://iswanna-chat-app-backend.hosting.codeyourfuture.io/messages) | [Live Frontend (WebSockets)](https://iswanna-chat-app-frontend-websocket.hosting.codeyourfuture.io/) | [ Live Frontend (Long Polling)](https://iswanna-chat-app-frontend-long-polling.hosting.codeyourfuture.io)
 
 ## 📌 Project Overview
 A sophisticated backend engine that supports real-time communication across multiple client types. This project demonstrates a "Hybrid" approach, ensuring high-speed data delivery via WebSockets while maintaining backward compatibility through HTTP Long Polling.
