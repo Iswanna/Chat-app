@@ -1,21 +1,146 @@
-#all-messages div {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+* {
+  box-sizing: border-box;
 }
 
-#all-messages span {
-  margin-right: 10px;
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 40px 20px 56px;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: #142033;
+  background:
+    radial-gradient(circle at top left, rgba(109, 122, 255, 0.2), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(91, 207, 185, 0.16), transparent 28%),
+    linear-gradient(180deg, #f7f9ff 0%, #eef3ff 45%, #e9f0fb 100%);
+}
+
+h1 {
+  margin: 0 0 24px;
+  text-align: center;
+  font-size: clamp(2.1rem, 5vw, 3.2rem);
+  letter-spacing: 0.06em;
+  color: #1b2a45;
+}
+
+form {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid rgba(60, 86, 140, 0.14);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 16px 40px rgba(26, 46, 82, 0.12);
+  backdrop-filter: blur(10px);
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #51627f;
+}
+
+input {
+  width: 100%;
+  border: 1px solid rgba(77, 99, 148, 0.18);
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: #142033;
+  background: rgba(247, 249, 255, 0.9);
+  outline: none;
+}
+
+input::placeholder {
+  color: #8a97ad;
+}
+
+input:focus {
+  border-color: rgba(88, 114, 255, 0.72);
+  box-shadow: 0 0 0 4px rgba(88, 114, 255, 0.14);
+}
+
+form button {
+  justify-self: start;
 }
 
 button {
   cursor: pointer;
-  background-color: #007bff;
-  color: white;
   border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  margin-right: 10px; 
+  border-radius: 999px;
+  padding: 10px 16px;
+  color: #fff;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4f6df6 0%, #6c63ff 100%);
+  box-shadow: 0 12px 24px rgba(79, 109, 246, 0.22);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 28px rgba(79, 109, 246, 0.28);
+  filter: brightness(1.03);
+}
+
+#all-messages {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#all-messages div {
+  padding: 16px 18px;
+  border: 1px solid rgba(77, 99, 148, 0.12);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.84);
+  box-shadow: 0 12px 28px rgba(26, 46, 82, 0.08);
+}
+
+#all-messages span {
+  margin-right: 10px;
+  line-height: 1.5;
+}
+
+#all-messages div span:first-child {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.02rem;
+  color: #1f314d;
+}
+
+#all-messages div span:not(:first-child) {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #4e6290;
+  background: rgba(88, 114, 255, 0.08);
+}
+
+#all-messages div button {
+  margin: 6px 10px 0 0;
+  padding: 8px 14px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 24px 14px 40px;
+  }
+
+  form,
+  #all-messages {
+    max-width: 100%;
+  }
+
+  #all-messages div {
+    padding: 14px;
+  }
+
+  button {
+    width: 100%;
+  }
 }

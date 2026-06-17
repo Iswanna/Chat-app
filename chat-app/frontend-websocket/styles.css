@@ -1,21 +1,149 @@
-#all-messages div {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 8px;
-  background-color: #c8f3a0;
+* {
+  box-sizing: border-box;
 }
 
-#all-messages span {
-  margin-right: 10px;
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 40px 20px 56px;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: #35261f;
+  background:
+    radial-gradient(circle at top left, rgba(255, 162, 91, 0.22), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(255, 112, 150, 0.18), transparent 28%),
+    linear-gradient(180deg, #fff7ef 0%, #fff1e4 48%, #ffe5db 100%);
+}
+
+h1 {
+  margin: 0 0 24px;
+  text-align: left;
+  font-size: clamp(2.1rem, 5vw, 3.2rem);
+  letter-spacing: 0.03em;
+  text-transform: none;
+  color: #7a3f2b;
+  text-shadow: 0 6px 18px rgba(255, 132, 82, 0.12);
+}
+
+form {
+  max-width: 760px;
+  margin: 0 auto 30px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid rgba(181, 104, 72, 0.14);
+  border-radius: 30px 18px 30px 18px;
+  background: rgba(255, 251, 246, 0.82);
+  box-shadow: 0 18px 44px rgba(140, 82, 50, 0.12);
+  backdrop-filter: blur(12px);
+}
+
+label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: #9b4f33;
+}
+
+input {
+  width: 100%;
+  border: 1px solid rgba(190, 126, 95, 0.2);
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: #35261f;
+  background: rgba(255, 247, 240, 0.96);
+  outline: none;
+}
+
+input::placeholder {
+  color: #b38772;
+}
+
+input:focus {
+  border-color: rgba(244, 124, 84, 0.82);
+  box-shadow: 0 0 0 4px rgba(244, 124, 84, 0.12);
+}
+
+form button {
+  justify-self: start;
 }
 
 button {
   cursor: pointer;
-  background-color: #007bff;
-  color: white;
   border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  margin-right: 10px; 
+  border-radius: 999px 18px 999px 18px;
+  padding: 11px 18px;
+  color: #ffffff;
+  font-weight: 700;
+  background: linear-gradient(135deg, #ff865e 0%, #ff5d8f 100%);
+  box-shadow: 0 12px 24px rgba(255, 109, 109, 0.2);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(255, 109, 109, 0.26);
+  filter: brightness(1.05);
+}
+
+#all-messages {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#all-messages div {
+  padding: 16px 18px;
+  border: 1px solid rgba(210, 134, 100, 0.16);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(255, 252, 249, 0.96), rgba(255, 239, 231, 0.98));
+  box-shadow: 0 14px 28px rgba(140, 82, 50, 0.08);
+}
+
+#all-messages span {
+  margin-right: 10px;
+  line-height: 1.5;
+}
+
+#all-messages div span:first-child {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.02rem;
+  color: #6b3624;
+}
+
+#all-messages div span:not(:first-child) {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: #9a5b43;
+  background: rgba(255, 111, 69, 0.1);
+}
+
+#all-messages div button {
+  margin: 6px 10px 0 0;
+  padding: 8px 14px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 24px 14px 40px;
+  }
+
+  form,
+  #all-messages {
+    max-width: 100%;
+  }
+
+  #all-messages div {
+    padding: 14px;
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+  }
 }
