@@ -40,10 +40,10 @@ I built this project as part of the **CodeYourFuture** curriculum. I moved it to
 - **Live Reactions:** Real-time Like and Dislike functionality with an "Absolute Total" update strategy to ensure UI consistency across all connected sessions.
 - **Command Pattern Protocol:** Designed a structured message format (`command` and `payload`) to allow the frontend to distinguish between new messages and reaction updates over a single stream.
 
-## ⚙️ Engineering Wins
-- **Custom Middleware Pipeline:** Developed modular middlewares for header extraction (`X-Username`) and manual JSON array validation, including robust `try/catch` error handling to prevent server crashes.
-- **DRY Refactoring:** Optimized the codebase by extracting common functionality into centralized helper functions for message retrieval, input sanitization (trimming), and multi-protocol broadcasting.
-- **Reliability:** Built-in "Early Return" guard clauses and 404/400 error handling ensure the API is robust against malformed data.
+## 🧠 What I Learned
+- **Protocol Management:** I learned the fundamental differences between the HTTP Long Polling and the WebSockets, and how to make them coexist on a single server.
+- **Middleware & Safety:** Building custom middlewares taught me the importance of the `next()` function and how to use `try/catch` blocks to protect the server from malformed user data.
+- **Architectural Refactoring:** I reorganized my backend by moving complicated logic into small, reusable helper functions. I also learned to handle errors right at the start of a function (the 'Early Return' style), which keeps the code flat and much easier to read.
 
 
 ## 🚀 Getting Started
