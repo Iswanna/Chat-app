@@ -11,6 +11,10 @@
 ## 📌 Project Overview
 A sophisticated backend engine that supports real-time communication across multiple client types. This project demonstrates a "Hybrid" approach, ensuring high-speed data delivery via WebSockets while maintaining backward compatibility through HTTP Long Polling.
 
+## **Project Origin**
+I built this project as part of the **CodeYourFuture** curriculum. I moved it to this standalone repository to highlight the technical architecture and provide a clear view of the final product.
+
+- **[Code Review](https://github.com/CodeYourFuture/Module-Decomposition/pull/83)**: View the PR and reviewer's feedback for this work.
 
 ## 🛠 Technologies Used
 
@@ -69,4 +73,6 @@ To run this project locally, follow these steps:
    ```
 6. **Open the App:**
    Open `frontend-polling/index.html` (for long-polling) or `frontend-websocket/index.html` (for WebSockets) in your browser.
+
+
 
