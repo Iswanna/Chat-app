@@ -1,4 +1,4 @@
-const API_URL = "iswanna-chat-app-backend.hosting.codeyourfuture.io";
+const API_URL = "iswanna-chat-app-backend.grads.hosting.cyf.academy";
 const API_BASE_URL = `https://${API_URL}`;
 
 // const API_URL = "localhost:3000";
